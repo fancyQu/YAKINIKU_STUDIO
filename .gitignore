@@ -1,0 +1,32 @@
+.venv/
+.venv-mlx/
+__pycache__/
+*.py[cod]
+.DS_Store
+data/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+
+# Local captures, diagnostics and generated browser packages are not source.
+/artifacts/
+/downloads/
+/static/space-capture.zip
+*.log
+
+# Local tools, credentials, build outputs and editor state.
+.venv-*/
+.venv*/
+.config/
+.idea/
+.vscode/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+*.pem
+*.key
+*.p12
+*.pfx

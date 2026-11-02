@@ -1,0 +1,26 @@
+.model-download-panel { margin-top: 18px; padding: 18px; border: 1px solid var(--line, #deddd5); border-radius: 12px; background: var(--background, #faf9f5); scroll-margin-top: 24px; }
+.model-download-panel[hidden], .model-download-actions [hidden] { display: none; }
+.model-download-heading { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+.model-download-heading h3 { margin: 0; font-size: 15px; }
+.model-download-info { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 7px 16px; margin: 16px 0; font-size: 12px; line-height: 1.7; }
+.model-download-info dt { color: var(--text-muted, #77796c); }
+.model-download-info dd { margin: 0; overflow-wrap: anywhere; }
+.model-download-panel progress { display: block; width: 100%; height: 9px; accent-color: var(--accent, #757d46); }
+.model-download-panel progress[hidden] { display: none; }
+.model-download-actions, .live-model-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.model-download-actions .button { min-height: 38px; }
+.live-model-actions { justify-content: flex-end; }
+.live-model-actions .button { font-size: 11px; min-height: 36px; }
+.translation-settings-group { margin-top: 18px; }
+.local-translation-note { padding: 11px 13px; border: 1px solid #e3e8d5; border-radius: 8px; background: #f1f4e9; }
+.local-translation-catalog { display: grid; gap: 8px; margin: 14px 0; }
+.local-translation-model-row { border: 1px solid var(--line, #deddd5); border-radius: 9px; padding: 11px 13px; background: #fafaf5; }
+.local-translation-model-row[data-selected="true"] { border-color: #b8c69f; background: #f0f4e7; }
+.local-translation-model-row-heading { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.local-translation-model-row strong { font-size: 11px; font-weight: 500; line-height: 1.7; overflow-wrap: anywhere; }
+.local-translation-model-row p { font-size: 10px; color: #929f80; line-height: 1.8; margin: 5px 0 0; }
+.local-translation-active-download { border-color: #d3dec0; background: #f0f4e7; }
+.local-translation-active-download progress { margin-top: 15px; }
+.translation-settings-group .model-download-actions .button { flex: 1 1 auto; font-size: 11px; }
+@media (max-width: 790px) { .live-model-actions { grid-column: 2; grid-row: 1 / 3; max-width: 145px; } }
+@media (max-width: 720px) { .live-model-actions { justify-content: flex-start; } .model-download-info { grid-template-columns: 1fr; gap: 2px; } .model-download-info dd { margin-bottom: 8px; } }

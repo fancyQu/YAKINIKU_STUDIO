@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f3ed">
+  <title>直播设置 · 烤肉台</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/static/favicon.svg?v=app-icon-1">
+  <script src="/static/theme.js?v=night-mode-1"></script>
+  <link rel="stylesheet" href="/static/style.css?v=live-mlx-1"><link rel="stylesheet" href="/static/providers.css?v=live-mlx-1">
+  <link rel="stylesheet" href="/static/navigation.css?v=ui-navigation-1">
+  <link rel="stylesheet" href="/static/model-download.css?v=local-translation-1">
+  <link rel="stylesheet" href="/static/theme.css?v=night-mode-1">
+  <script src="/static/navigation.js?v=ui-navigation-1" defer></script>
+</head>
+<body class="project-page">
+<main class="project-shell providers-shell">
+  <header class="project-topbar"><a class="project-brand" href="/">烤肉台 <span>YAKINIKU STUDIO</span></a><span class="page-header-label">本机工作空间 · 直播设置</span></header>
+    <nav data-app-navigation aria-label="页面导航"></nav>
+  <section class="project-hero provider-hero"><div class="eyebrow">LIVE SETTINGS</div><h1>本机听日语，<em>一次翻成中文。</em></h1><p>直播独立使用一个本机识别模型和一个翻译模型。完整音频的识别、校对与翻译配置单独保留。</p></section>
+  <div id="live-settings-status" class="notice" role="status" aria-live="polite">正在读取直播设置…</div>
+  <div id="live-settings-lock" class="service-lock-note" hidden>正在录制或补全字幕。当前场次使用固定配置，结束后再修改。</div>
+  <form id="live-settings-form" novalidate>
+    <div class="live-settings-grid">
+      <section class="card workflow-step" aria-labelledby="live-local-heading">
+        <div class="workflow-step-heading"><span class="workflow-number">01</span><h2 id="live-local-heading">本机日语识别</h2><span id="live-model-badge" class="workflow-ready">未准备</span></div>
+        <p class="workflow-description">音频留在本机，由 Apple Silicon GPU 分段识别。</p>
+        <label class="field-label" for="live-asr-model">识别后端与模型</label><select id="live-asr-model" class="text-input"><option value="mlx:mlx-whisper-small">MLX · Whisper Small（多语言）</option><option value="mlx:mlx-whisper-large-v3-turbo">MLX · Whisper large-v3-turbo（多语言）</option><option value="tiny:tiny">CPU · Whisper Tiny（兼容模式）</option></select>
+        <p class="field-help">先选择模型并检查本机文件。MLX 权重由你点击下载；打开页面、保存配置和加载模型均不会自动下载。</p>
+        <div id="live-model-download" class="model-download-panel" aria-labelledby="live-download-heading" hidden>
+          <div class="model-download-heading"><h3 id="live-download-heading">MLX 模型下载</h3><span id="live-download-badge" class="workflow-ready">等待检查</span></div>
+          <p class="field-help">下载只保存模型文件，不改变已保存的直播选择。完成后，再点击下方「保存并加载模型」。</p>
+          <dl class="model-download-info"><dt>下载来源</dt><dd id="live-download-source">等待检查</dd><dt>模型大小</dt><dd id="live-download-size">等待检查</dd></dl>
+          <progress id="live-download-progress" max="100" value="0" aria-label="模型下载进度" hidden></progress>
+          <p id="live-download-status" class="field-help" role="status" aria-live="polite">等待检查本机模型文件。</p>
+          <div class="model-download-actions"><button id="download-live-model" type="button" class="button button-primary" disabled>下载模型</button><button id="cancel-live-model-download" type="button" class="button button-outline" hidden>取消下载</button></div>
+        </div>
+        <button id="prepare-live-model" type="button" class="button button-outline workflow-fetch">保存并加载模型</button>
+        <p id="live-model-status" class="field-help" role="status">等待检查本机模型。</p>
+        <details class="live-model-details"><summary>模型来源与诊断</summary><dl><dt>本机路径</dt><dd id="live-model-path">—</dd><dt>版本</dt><dd id="live-model-version">—</dd></dl></details>
+        <div class="provider-field-grid live-segment-fields"><div><label class="field-label" for="live-segment-seconds">最长音频段</label><select id="live-segment-seconds" class="text-input"><option value="3">3 秒</option><option value="5">5 秒（基线）</option></select></div><div><label class="field-label" for="live-silence-ms">停顿切段</label><select id="live-silence-ms" class="text-input"><option value="400">400 毫秒</option><option value="600">600 毫秒（基线）</option><option value="800">800 毫秒</option></select></div></div>
+        <p class="workflow-bottom-note">开始前须加载并预热成功。识别异常时继续保存录音，界面会提示「仅录音」。</p>
+      </section>
+      <section class="card workflow-step" aria-labelledby="live-translate-heading">
+        <div class="workflow-step-heading"><span class="workflow-number">02</span><h2 id="live-translate-heading">简体中文翻译</h2><span id="live-translation-badge" class="workflow-ready">未配置</span></div>
+        <p class="workflow-description">日语原稿 → 一次中文翻译。直播不单独调用校对模型。</p>
+        <label class="field-label" for="live-translation-backend">翻译方式</label><select id="live-translation-backend" class="text-input"><option value="cloud">云端翻译 · 使用文字服务商</option><option value="local">本机翻译 · 使用 Apple Silicon GPU</option></select>
+        <div id="live-cloud-translation-settings" class="translation-settings-group">
+        <label class="field-label" for="live-translation-provider">翻译服务商连接</label><select id="live-translation-provider" class="text-input"></select>
+        <p id="live-provider-state" class="field-help"></p><a class="provider-text-button" href="/static/providers.html?section=text" target="_blank" rel="noopener">添加或编辑文字服务商 ↗</a>
+        <label class="field-label" for="live-translation-model">直播翻译模型</label><input id="live-translation-model" class="text-input" placeholder="选择或填写服务商实际支持的模型" maxlength="256" autocomplete="off" spellcheck="false">
+        <button id="live-fetch-models" type="button" class="button button-outline workflow-fetch">获取全部模型</button><input id="live-model-search" type="search" class="text-input workflow-model-search" placeholder="搜索已获取的模型" aria-label="搜索直播翻译模型" hidden><select id="live-translation-model-list" class="text-input workflow-model-list" aria-label="选择直播翻译模型" hidden></select><p id="live-translation-model-status" class="field-help" role="status"></p>
+        </div>
+        <div id="live-local-translation-settings" class="translation-settings-group" hidden>
+          <p class="field-help local-translation-note">日语文本留在本机，无需 API 密钥。翻译与语音识别共用 GPU 和统一内存，不能保证比云端更快。</p>
+          <label class="field-label" for="live-local-translation-model">本机翻译模型 · 4-bit</label><select id="live-local-translation-model" class="text-input" aria-describedby="local-translation-memory-note"><option value="">正在读取本机模型目录…</option></select>
+          <p id="local-translation-hardware" class="field-help"></p>
+          <p id="local-translation-memory-note" class="field-help">运行内存为估计范围，不包含语音识别模型、macOS 和其他应用；请保留余量。</p>
+          <div id="local-translation-catalog" class="local-translation-catalog" aria-label="本机翻译模型大小与状态"></div>
+          <div class="model-download-panel" aria-labelledby="local-translation-download-heading">
+            <div class="model-download-heading"><h3 id="local-translation-download-heading">本机翻译模型</h3><span id="local-translation-runtime-badge" class="workflow-ready">等待检查</span></div>
+            <p id="local-translation-description" class="field-help"></p>
+            <dl class="model-download-info"><dt>下载体积</dt><dd id="local-translation-size">等待检查</dd><dt>预计运行内存</dt><dd id="local-translation-memory">等待检查</dd><dt>下载来源</dt><dd id="local-translation-source">等待检查</dd></dl>
+            <p id="local-translation-runtime-status" class="field-help" role="status" aria-live="polite">正在读取本机翻译状态…</p>
+            <div class="model-download-actions"><button id="download-local-translation-model" type="button" class="button button-primary" disabled>下载模型</button><button id="prepare-local-translation-model" type="button" class="button button-outline" disabled>加载模型</button></div>
+            <p class="field-help">仅点击「下载模型」后才联网获取权重。下载和加载都不会改变已保存的翻译方式或模型；最后点击「保存直播配置」使选择生效。</p>
+          </div>
+        </div>
+        <div id="local-translation-active-download" class="model-download-panel local-translation-active-download" aria-labelledby="local-translation-active-heading" hidden>
+          <div class="model-download-heading"><h3 id="local-translation-active-heading">本机翻译模型下载</h3><span id="local-translation-download-badge" class="workflow-ready">下载中</span></div>
+          <progress id="local-translation-download-progress" max="100" value="0" aria-label="本机翻译模型下载进度" hidden></progress>
+          <p id="local-translation-download-status" class="field-help" role="status" aria-live="polite"></p>
+          <div class="model-download-actions"><button id="cancel-local-translation-download" type="button" class="button button-outline">取消下载</button></div>
+        </div>
+        <label class="field-label" for="live-glossary">人名与术语表（可选）</label><textarea id="live-glossary" class="text-input live-glossary" rows="4" maxlength="12000" placeholder="例如：日文人名 → 常用中文译名"></textarea>
+        <p class="workflow-bottom-note">保留 ASR 日语原稿。翻译只做有依据的轻量理解，保留数字与语气，不补写漏听内容。</p>
+      </section>
+    </div>
+    <footer class="service-savebar"><div><strong id="live-save-state">读取中</strong><p>只保存直播模型、翻译路由与切段参数；完整音频精修配置保留。</p></div><div class="service-save-actions"><button id="reload-live-settings" type="button" class="button button-outline">重新读取</button><button id="save-live-settings" type="submit" class="button button-primary">保存直播配置</button></div></footer>
+  </form>
+  <p class="provider-sidebar-note">服务商密钥由「校对与翻译」中的连接管理。直播只保存连接引用，每场参数固定，音频不会自动上传给文件识别服务。</p>
+</main>
+  <script type="module" src="/static/live-settings.js?v=local-translation-1"></script>
+</body></html>

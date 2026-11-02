@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f3ed"><title>项目预览 · 烤肉台</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/static/favicon.svg?v=app-icon-1">
+  <script src="/static/theme.js?v=night-mode-1"></script>
+  <link rel="stylesheet" href="/static/style.css?v=live-refinement-1">  <link rel="stylesheet" href="/static/navigation.css?v=ui-navigation-1">
+  <link rel="stylesheet" href="/static/theme.css?v=night-mode-1">
+  <script src="/static/navigation.js?v=ui-navigation-1" defer></script>
+</head>
+<body class="project-page">
+  <main class="project-shell preview-shell">
+    <header class="project-topbar"><a class="project-brand" href="/">烤肉台 <span>YAKINIKU STUDIO</span></a><span class="page-header-label">本机工作空间 · 项目预览</span></header>
+    <nav data-app-navigation aria-label="页面导航"></nav>
+    <section class="project-hero preview-hero"><div class="eyebrow">PROJECT PREVIEW</div><h1 id="preview-title">正在读取项目…</h1><p id="preview-meta">音频与字幕同步预览</p><p id="preview-source-note" class="preview-source-note" hidden>此为直播录音的精修版本 · <a id="preview-source-link" href="#">返回原始直播回放 ↗</a></p></section>
+    <div id="preview-notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="card preview-player" aria-label="音频字幕预览">
+      <div class="preview-toolbar"><span id="preview-state">字幕预览</span><div class="language-switch" role="group" aria-label="字幕显示语言"><button type="button" data-language="ja" aria-pressed="false">日语</button><button type="button" data-language="zh" aria-pressed="false">中文</button><button type="button" data-language="bilingual" class="active" aria-pressed="true">双语</button></div></div>
+      <div id="preview-caption" class="preview-caption" aria-live="off"><p id="preview-zh" class="preview-zh">点击播放，预览同步字幕。</p><p id="preview-ja" class="preview-ja"></p><span id="preview-caption-time" class="preview-caption-time"></span></div>
+      <div class="preview-audio-wrap"><label id="audio-part-label" class="field-label" for="audio-part" hidden>音频分卷<select id="audio-part" class="text-input"></select></label><audio id="preview-audio" controls preload="metadata"></audio><p id="audio-unavailable" class="project-meta" hidden>音频正在准备，稍后会自动出现在这里。</p></div>
+    </section>
+    <section id="preview-refinement" class="card preview-refinement" aria-labelledby="refinement-heading" hidden>
+      <div class="refinement-heading"><div><div class="eyebrow">AFTER LIVE</div><h2 id="refinement-heading">录音精准校验</h2><p>重新听取完整录音，生成独立精修项目；原录音和直播字幕继续保留。</p></div><span class="refinement-badge">MiniMax → GPT</span></div>
+      <ol class="refinement-chain" aria-label="精准校验处理流程"><li><span>01</span><strong>MiniMax 音频转写</strong><small>重新识别日语</small></li><li><span>02</span><strong>GPT 日语校对</strong><small>保守修正识别文本</small></li><li><span>03</span><strong>GPT 中文翻译</strong><small>导出日语、中文、双语 SRT</small></li></ol>
+      <p id="refinement-models" class="refinement-models"></p>
+      <div id="refinement-progress-wrap" class="refinement-progress-wrap" hidden><progress id="refinement-progress" max="100" value="0" aria-label="精准校验进度"></progress></div>
+      <p id="refinement-status" class="refinement-status" role="status" aria-live="polite">正在检查精准校验配置…</p>
+      <div id="refinement-config-links" class="refinement-config-links" hidden><a href="/static/providers.html?section=asr" target="_blank" rel="noopener">配置 MiniMax 语音识别 ↗</a><a href="/static/providers.html?section=text" target="_blank" rel="noopener">配置 GPT 校对与翻译 ↗</a><button id="refinement-refresh" type="button">重新检查配置</button></div>
+      <label id="refinement-consent-label" class="refinement-consent" hidden><input id="refinement-consent" type="checkbox">我确认将本项目录音发送至已配置的 MiniMax，日语文本发送至所选 GPT 服务；调用费用按服务商计费。</label>
+      <div class="refinement-actions"><button id="preview-refine" class="button button-primary" type="button" disabled>开始精准校验</button><a id="refinement-project-link" class="button button-outline" href="#" hidden>查看精修项目</a></div>
+      <p class="refinement-footnote">重新识别可帮助修正直播字幕，准确度仍取决于录音质量和所选模型，剪辑前请试听核对。</p>
+    </section>
+    <div class="preview-detail-layout">
+      <section class="card preview-timeline-card"><div class="card-heading"><h2>逐句时间轴 <span id="preview-count" class="count-badge">0 句</span></h2><label class="preview-follow"><input id="follow-playback" type="checkbox" checked>跟随播放</label></div><p class="preview-timeline-help">点击句子跳转；播放时仅字幕列表跟随。手动滚动列表会暂停跟随。</p><div id="preview-timeline" class="preview-timeline" data-language="bilingual"><p class="project-empty">正在加载字幕…</p></div></section>
+      <aside class="card preview-export-card"><div class="card-heading"><h2>导出项目</h2></div><p>分别下载音频与三种字幕，供剪辑使用。</p><div id="preview-downloads" class="preview-downloads"></div><p id="preview-timing-note" class="project-meta" hidden></p><p id="preview-warning" class="project-error" hidden></p><button id="preview-retry" class="button button-outline" type="button" hidden>继续处理未完成内容</button><p class="preview-export-note">双语字幕：中文在上，日语在下。</p><p class="preview-export-note"><a href="/static/import.html#subtitle-settings">调整新项目分句长度</a></p></aside>
+    </div>
+  </main>
+  <script type="module" src="/static/preview.js?v=ui-navigation-1"></script>
+</body></html>

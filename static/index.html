@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="采集直播音频，实时转写日语并翻译为中文，分别保存音频与字幕。">
+  <title>烤肉台 · 日语直播字幕工作台</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/static/favicon.svg?v=app-icon-1">
+  <script src="/static/theme.js?v=night-mode-1"></script>
+  <link rel="stylesheet" href="/static/style.css?v=audio-projects-2">
+  <link rel="stylesheet" href="/static/navigation.css?v=ui-navigation-1">
+  <link rel="stylesheet" href="/static/model-download.css?v=mlx-download-1">
+  <link rel="stylesheet" href="/static/theme.css?v=night-mode-1">
+  <script src="/static/navigation.js?v=ui-navigation-1" defer></script>
+</head>
+<body>
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M4 14V10m5 9V5m6 12V7m5 7v-4"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+    <symbol id="i-screen" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4m-5-8h10"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></symbol>
+    <symbol id="i-captions" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 10H8v4h2m7-4h-2v4h2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h4l3 4h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 7a7 7 0 0 1 11.5-1L20 9M4 15l2.4 3A7 7 0 0 0 18 17"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <a class="brand" href="/" aria-label="烤肉台首页">
+        <span class="brand-mark"><svg class="icon"><use href="#i-wave"/></svg></span>
+        <span class="brand-name">烤肉台<span>YAKINIKU STUDIO</span></span>
+      </a>
+      <div class="nav-section-label">工作空间</div>
+      <nav class="navigation">
+        <a href="#workspace" class="nav-item active" aria-current="page"><svg class="icon"><use href="#i-wave"/></svg><span>实时工作台</span><span class="nav-dot"></span></a>
+        <a href="/static/import.html" class="nav-item" target="_blank" rel="noopener"><svg class="icon"><use href="#i-captions"/></svg><span>音频翻译</span></a>
+        <a href="/static/space-downloads.html" class="nav-item" target="_blank" rel="noopener"><svg class="icon"><use href="#i-download"/></svg><span>Space 下载</span></a>
+        <a href="#recordings" class="nav-item"><svg class="icon"><use href="#i-folder"/></svg><span>录制文件</span></a>
+      </nav>
+      <div class="sidebar-note">
+        <span class="note-kicker">FROM LIVE TO STORY</span>
+        <p>留住声音，<br>也留住每一句话。</p>
+        <div class="note-languages"><span>日本語</span><svg class="icon"><use href="#i-arrow"/></svg><span>中文</span></div>
+      </div>
+      <div class="sidebar-bottom"><span class="local-dot"></span>本机工作空间<span class="version">v1.0</span></div>
+    </aside>
+
+    <main id="workspace" class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb">工作空间<span>/</span><strong>实时工作台</strong></div>
+        <div class="topbar-actions"><span class="local-badge"><span></span>本地运行</span><button id="open-settings" class="button button-quiet" type="button"><svg class="icon"><use href="#i-sliders"/></svg>直播设置</button></div>
+      </header>
+      <nav data-app-navigation aria-label="页面导航"></nav>
+
+      <section class="page-heading" aria-labelledby="page-title">
+        <div><div class="eyebrow"><span></span>LIVE TRANSLATION STUDIO</div><h1 id="page-title">听见日语，<em>读懂中文。</em></h1><p>从直播里的第一句话，到剪辑时间线上的最后一帧。</p></div>
+        <button id="demo-button" class="button button-outline" type="button"><svg class="icon"><use href="#i-play"/></svg>体验字幕演示</button>
+      </section>
+
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+      <section class="live-readiness card" aria-label="直播准备状态">
+        <div class="live-model-summary"><span class="tiny-label">LOCAL JAPANESE ASR</span><strong id="live-model-name">正在读取本机模型…</strong><span id="live-model-state" class="live-state" data-state="not_prepared">未准备</span></div>
+        <div class="live-translation-summary"><span class="tiny-label">中文翻译</span><strong id="live-translation-state">正在读取配置…</strong><span id="live-pending-count" class="subtle-text">暂无待补全</span></div>
+        <div class="live-model-actions"><button id="open-model-download" class="button button-quiet" type="button">模型下载</button><button id="prepare-live-model" class="button button-outline" type="button" disabled>加载并预热</button></div>
+        <p id="live-prepare-help">开始前加载并预热模型；本机日语分段识别后，只调用一次文字翻译。</p>
+      </section>
+
+      <div class="workspace-grid">
+        <section class="monitor-card" aria-label="实时字幕监看">
+          <div class="monitor-topline"><span class="monitor-label"><span id="status-dot" class="status-dot"></span><span id="recording-status">等待开始</span></span><span id="source-label" class="source-label">尚未连接直播标签页</span></div>
+          <div class="waveform-wrap"><canvas id="waveform" width="1000" height="100" aria-label="直播音频波形"></canvas><span class="waveform-idle">AUDIO INPUT</span></div>
+          <div class="caption-display" aria-live="polite" aria-atomic="true"><div class="caption-language">日本語 <span>→</span> 简体中文</div><p id="live-ja" class="live-ja">日语原文将在这里实时显示</p><p id="live-zh" class="live-zh">下一句话，即将被看见。</p><div id="latest-recognized" class="latest-recognized" hidden><span>最新识别 · 等待翻译</span><p id="latest-recognized-text"></p></div></div>
+          <div class="monitor-footer"><div class="audio-meter"><svg class="icon"><use href="#i-wave"/></svg><meter id="audio-level" min="0" max="1" value="0" aria-label="音频输入电平"></meter><span id="connection-status">未连接</span></div><div class="monitor-tools"><button id="overlay-button" class="monitor-tool" type="button" title="打开独立字幕窗口"><svg class="icon"><use href="#i-captions"/></svg><span>字幕窗口</span></button><button id="fullscreen-button" class="monitor-tool icon-only" type="button" title="全屏显示字幕" aria-label="全屏显示字幕"><svg class="icon"><use href="#i-expand"/></svg></button></div></div>
+        </section>
+
+        <section class="session-card card" aria-labelledby="session-heading">
+          <div class="card-heading"><h2 id="session-heading">开始一场录制</h2><span class="tiny-label">NEW SESSION</span></div>
+          <label class="field-label" for="session-title">直播名称 <span>选填</span></label><input id="session-title" class="text-input session-title" type="text" placeholder="例如：今晚的闲聊直播" maxlength="100" autocomplete="off">
+          <div class="session-clock"><span><svg class="icon"><use href="#i-clock"/></svg>录制时长</span><strong id="timer">00:00:00</strong></div>
+          <button id="start-button" class="button button-primary start-button" type="button"><span class="record-icon"></span>选择直播标签页并开始</button>
+          <button id="stop-button" class="button button-stop" type="button" disabled><svg class="icon"><use href="#i-stop"/></svg>结束并保存</button>
+          <div id="capture-help" class="capture-help"><span class="help-heading">在 Edge 中操作</span><ol><li>打开并播放 X 的直播。</li><li>开始时选择对应的<strong>标签页</strong>。</li><li>勾选<strong>「分享标签页音频」</strong>。</li></ol><p>只采集你选择的直播音频，保持本页打开。</p></div>
+          <div class="session-save-note"><svg class="icon"><use href="#i-check"/></svg>音频与字幕独立保存，方便后期剪辑</div>
+        </section>
+
+        <section class="transcript-card card" aria-labelledby="transcript-heading">
+          <div class="card-heading transcript-heading"><div class="heading-with-icon"><svg class="icon"><use href="#i-captions"/></svg><h2 id="transcript-heading">逐句转写</h2><span id="segment-count" class="count-badge">0 句</span></div><span id="latency-label" class="subtle-text">日语原文 · 中文翻译</span></div>
+          <div id="transcript-list" class="transcript-list"><div id="empty-transcript" class="empty-transcript"><div class="empty-lines"><span></span><span></span><span></span></div><h3>好内容，值得逐句留下。</h3><p>开始录制后，原文与译文会按时间顺序出现在这里。</p><span class="empty-detail">实时识别 · 自动翻译 · 时间轴同步</span></div></div>
+          <div class="transcript-footer"><span class="subtle-text"><span class="small-dot"></span>字幕时间以录音开始为基准</span><span class="format-note">SRT <span>/</span> VTT</span></div>
+        </section>
+
+        <section id="recordings" class="recordings-card card" aria-labelledby="recordings-heading">
+          <div class="card-heading"><div class="heading-with-icon"><svg class="icon"><use href="#i-folder"/></svg><h2 id="recordings-heading">录制文件</h2></div><button id="refresh-recordings" class="button-icon" type="button" aria-label="刷新录制文件" title="刷新录制文件"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
+          <div class="export-formats"><span><b>WAV</b> 音频</span><span><b>SRT / VTT</b> 字幕</span></div>
+          <div id="recordings-list" class="recordings-list"><div class="library-empty"><svg class="icon"><use href="#i-folder"/></svg><p>还没有录制文件</p><span>结束录制后，可在这里分别下载<br>音频、中文字幕与双语字幕。</span></div></div>
+          <div class="library-footnote">文件保存在本机项目目录中。</div>
+        </section>
+        <section class="card import-entry" aria-labelledby="audio-import-heading"><div><h2 id="audio-import-heading">已有完整音频？导入后制作字幕。</h2><p>云端识别日语、GPT 校正与中文翻译，支持试听预览和三种 SRT 导出。</p></div><a class="button button-outline" href="/static/import.html" target="_blank" rel="noopener">打开音频翻译模块<svg class="icon"><use href="#i-arrow"/></svg></a></section>
+      </div>
+
+      <footer class="page-footer"><span>把时间留给创作。</span><span>Edge 标签页采集 <span class="footer-dot">·</span> 本机日语识别 → 一次中文翻译</span></footer>
+    </main>
+  </div>
+
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-heading">
+    <div class="dialog-header"><div><div class="eyebrow">MAKE IT YOURS</div><h2 id="settings-heading">API 与字幕设置</h2></div><button id="close-settings" class="button-icon" type="button" aria-label="关闭设置"><svg class="icon"><use href="#i-close"/></svg></button></div>
+    <p class="field-help"><a href="/static/providers.html" class="button button-outline" target="_blank" rel="noopener">服务商与流程设置 · 音频识别 / 校对 / 翻译</a></p>
+    <form id="settings-form">
+      <label class="field-label" for="provider-preset">接口预设</label><select id="provider-preset" class="text-input"><option value="local" selected>本机识别 + GPT 校正翻译</option><option value="custom">通用兼容接口</option><option value="official">OpenAI 实时接口</option></select><p class="field-help">预设只调整接口方式，保留你填写的模型。API 地址与密钥由你填写，模型与接口支持请以服务商文档为准。</p>
+      <label class="field-label" for="api-base-url">共用 API 地址</label><input id="api-base-url" class="text-input" type="url" placeholder="https://你的服务商/v1" autocomplete="off" spellcheck="false" required><p class="field-help">填写服务商提供的完整基础地址，通常以 /v1 结尾。切换服务地址时，请同时填写新服务的密钥。</p>
+      <label class="field-label" for="api-key">共用 API 密钥</label><input id="api-key" class="text-input" type="password" placeholder="填写服务平台的 API 密钥" autocomplete="off" spellcheck="false"><p class="field-help">密钥只保存在本机服务中，不会存入浏览器。留空保留已保存的密钥；语音识别和翻译也可以分别配置。</p>
+      <div class="form-columns"><div><label class="field-label" for="transcription-mode">语音识别方式</label><select id="transcription-mode" class="text-input"><option value="local" selected>本机识别（日语）</option><option value="realtime">云端实时转写</option><option value="segmented">云端分段转写</option></select></div><div><label class="field-label" for="translation-api">文字翻译接口</label><select id="translation-api" class="text-input"><option value="responses">Responses</option><option value="chat_completions">Chat Completions</option></select></div></div>
+      <p id="transcription-mode-help" class="field-help mode-help">本机识别日语，每 3–5 秒处理一段；识别文本发送 GPT 校正并翻译为中文。首次加载本机模型需要稍候。</p>
+      <div id="segment-settings" class="segment-settings" hidden><label class="field-label" for="segment-seconds">每段音频时长 <span>3–10 秒</span></label><input id="segment-seconds" class="text-input" type="number" min="3" max="10" step="1" value="5"><p class="field-help">较短的音频段通常更快出字幕；实际延迟还取决于平台处理速度和网络。</p></div>
+      <div id="local-model-settings" class="segment-settings"><label class="field-label" for="local-transcription-model">本机识别模型</label><select id="local-transcription-model" class="text-input"><option value="tiny">Tiny · 优先速度</option><option value="base" disabled>Base · 尚未准备</option></select><p class="field-help">日语识别在本机运行，音频不会上传。识别文本发送 GPT 校正并翻译为中文。首次加载本机模型需要稍候。</p></div>
+      <div class="form-columns"><div id="cloud-transcription-model"><label class="field-label" for="transcription-model">语音识别模型</label><input id="transcription-model" class="text-input" placeholder="选择或填写服务支持的语音模型" autocomplete="off" spellcheck="false"></div><div><label class="field-label" for="translation-model">翻译模型</label><input id="translation-model" class="text-input" placeholder="选择或填写服务支持的翻译模型" autocomplete="off" spellcheck="false"></div></div>
+      <div id="transcription-model-picker" class="model-picker">
+        <div class="model-picker-header"><label class="field-label" for="transcription-model-list">从语音 API 选择识别模型</label><button id="fetch-transcription-models" class="button button-outline" type="button">获取模型</button></div>
+        <input id="transcription-model-search" class="text-input model-search" type="search" aria-label="搜索语音服务模型" placeholder="搜索语音服务模型名称" autocomplete="off" spellcheck="false" hidden>
+        <select id="transcription-model-list" class="text-input" aria-describedby="transcription-model-status" disabled><option value="">先获取模型列表</option></select>
+        <p id="transcription-model-status" class="field-help" role="status" aria-live="polite">获取语音服务返回的全部模型。请按服务商文档选择支持日语识别与所选语音接口的模型；列表本身不证明模型具备语音能力。也可手动填写或单独配置语音服务。</p>
+      </div>
+      <div class="model-picker">
+        <div class="model-picker-header"><label class="field-label" for="translation-model-list">从 API 选择翻译模型</label><button id="fetch-translation-models" class="button button-outline" type="button">获取模型</button></div>
+        <input id="translation-model-search" class="text-input model-search" type="search" aria-label="搜索可用模型" placeholder="搜索模型名称" autocomplete="off" spellcheck="false" hidden>
+        <select id="translation-model-list" class="text-input" aria-describedby="translation-model-status" disabled><option value="">先获取模型列表</option></select>
+        <p id="translation-model-status" class="field-help" role="status" aria-live="polite">填写 API 地址与密钥后即可获取，无需先保存。列表包含平台返回的所有模型，请选择支持文字翻译的模型；也可在上方手动填写。</p>
+      </div>
+      <p id="translation-api-help" class="field-help mode-help">Responses 接口需要平台支持 /responses。填写你在该平台实际可用的翻译模型。</p>
+      <details class="advanced-settings"><summary>分别配置语音识别与翻译服务 <span>可选</span></summary><p class="field-help">地址留空时使用共用 API 地址。独立密钥留空时保留已保存的独立密钥；尚未配置时使用共用密钥。</p>
+        <div id="transcription-api-settings" class="advanced-role"><h3>语音识别服务</h3><label class="field-label" for="transcription-base-url">独立 API 地址</label><input id="transcription-base-url" class="text-input" type="url" placeholder="留空使用共用 API 地址" autocomplete="off" spellcheck="false"><label class="field-label" for="transcription-api-key">独立 API 密钥</label><input id="transcription-api-key" class="text-input" type="password" placeholder="留空使用共用密钥" autocomplete="off" spellcheck="false"><label class="checkbox-label"><input id="clear-transcription-api-key" type="checkbox">移除已保存的独立密钥，改用共用密钥</label></div>
+        <div class="advanced-role"><h3>文字翻译服务</h3><label class="field-label" for="translation-base-url">独立 API 地址</label><input id="translation-base-url" class="text-input" type="url" placeholder="留空使用共用 API 地址" autocomplete="off" spellcheck="false"><label class="field-label" for="translation-api-key">独立 API 密钥</label><input id="translation-api-key" class="text-input" type="password" placeholder="留空使用共用密钥" autocomplete="off" spellcheck="false"><label class="checkbox-label"><input id="clear-translation-api-key" type="checkbox">移除已保存的独立密钥，改用共用密钥</label></div>
+      </details>
+      <label class="field-label" for="glossary">人名与常用术语 <span>选填</span></label><textarea id="glossary" class="text-input" rows="4" placeholder="例如：&#10;さくら → 樱&#10;配信 → 直播" maxlength="4000"></textarea><p class="field-help">补充主播名、昵称和专有名词，帮助转写和翻译保持一致。</p>
+      <div class="api-destinations"><strong>录制期间的数据去向</strong><p id="api-destinations">直播音频由本机识别；日语文本发送到你配置的 API 服务进行校正与中文翻译。云端服务按平台规则计费。</p></div>
+      <div class="config-check"><button id="test-connection" class="button button-outline" type="button" aria-describedby="test-connection-help">检查 API 配置</button><p id="test-connection-help">检查已保存的地址、鉴权与模型列表，不代替实际语音测试。</p></div>
+      <div id="settings-status" class="settings-status" role="status" aria-live="polite"></div>
+      <div class="dialog-actions"><span>本机识别 · GPT 校正与中文翻译</span><button id="save-settings" class="button button-primary" type="submit">保存设置<svg class="icon"><use href="#i-arrow"/></svg></button></div>
+    </form>
+  </dialog>
+  <script type="module" src="/static/app.js?v=mlx-download-1"></script>
+</body>
+</html>

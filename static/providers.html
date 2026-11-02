@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f3ed">
+  <title>API 配置 · 烤肉台</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/static/favicon.svg?v=app-icon-1">
+  <script src="/static/theme.js?v=night-mode-1"></script>
+  <link rel="stylesheet" href="/static/style.css?v=service-providers-1"><link rel="stylesheet" href="/static/providers.css?v=live-mlx-1">
+  <link rel="stylesheet" href="/static/navigation.css?v=ui-navigation-1">
+  <link rel="stylesheet" href="/static/theme.css?v=night-mode-1">
+  <script src="/static/navigation.js?v=ui-navigation-1" defer></script>
+</head>
+<body class="project-page">
+  <main class="project-shell providers-shell">
+    <header class="project-topbar"><a class="project-brand" href="/">烤肉台 <span>YAKINIKU STUDIO</span></a><span class="page-header-label">本机工作空间 · API 配置</span></header>
+    <nav data-app-navigation aria-label="页面导航"></nav>
+    <section id="service-hero" class="project-hero provider-hero"><div class="eyebrow">API SETTINGS</div><h1>先选用途，<em>再配置服务。</em></h1><p>音频识别与文字处理分开管理。每个模块独立配置、独立保存。</p></section>
+    <div id="service-status" class="notice" role="status" aria-live="polite">正在读取 API 配置…</div>
+    <div id="service-lock-note" class="service-lock-note" role="status" hidden>正在录制或处理音频。你可以查看配置，结束当前任务后再修改。</div>
+    <section id="service-overview" aria-label="选择配置模块">
+      <div class="service-entry-grid">
+        <button id="open-asr-settings" type="button" class="card service-entry">
+          <span class="service-entry-top"><span class="service-entry-index">01 / AUDIO</span><span class="service-entry-arrow" aria-hidden="true">↗</span></span>
+          <span class="service-entry-symbol" aria-hidden="true">▥</span><span class="service-entry-title">ASR 音频识别</span>
+          <span class="service-entry-description">将完整音频转成带时间轴的日语原文。</span>
+          <span class="service-entry-detail">MiniMax 原生语音 / OpenAI 兼容转写</span>
+          <span class="service-entry-bottom"><span id="overview-asr-status">正在读取配置</span><span>进入配置 →</span></span>
+        </button>
+        <button id="open-text-settings" type="button" class="card service-entry">
+          <span class="service-entry-top"><span class="service-entry-index">02 / TEXT</span><span class="service-entry-arrow" aria-hidden="true">↗</span></span>
+          <span class="service-entry-symbol" aria-hidden="true">文</span><span class="service-entry-title">校对与翻译</span>
+          <span class="service-entry-description">先校对日语原文，再翻译成中文。</span>
+          <span class="service-entry-detail">GPT 等文字模型 / OpenAI 与 Anthropic 协议</span>
+          <span class="service-entry-bottom"><span id="overview-text-status">正在读取配置</span><span>进入配置 →</span></span>
+        </button>
+      </div>
+      <div class="card service-live-settings-link"><div><h2 id="service-live-note">直播音频：独立本机模型设置</h2><p>以上两部分用于完整音频精修。直播使用本机识别 → 一次中文翻译，模型和翻译路由单独保存。</p></div><a class="button button-outline" href="/static/live-settings.html">进入直播设置 →</a></div>
+    </section>
+    <section id="service-section" hidden aria-labelledby="service-section-heading">
+      <div class="service-section-heading"><div><button id="back-service-overview" type="button" class="provider-text-button service-back">← 返回 API 配置总览</button><h2 id="service-section-heading">ASR 音频识别</h2><p id="service-section-description"></p></div><div class="service-section-actions"><span id="service-section-step" class="service-section-badge">AUDIO → 日语</span><button id="save-section-top" type="button" class="button button-primary">保存 ASR 配置</button></div></div>
+      <form id="service-config-form" novalidate>
+        <section class="service-connections" aria-labelledby="service-connections-heading">
+          <aside class="card provider-sidebar"><div class="provider-sidebar-heading"><div><h2 id="service-connections-heading">服务商连接</h2><span id="provider-count">0 个连接</span></div><button id="add-provider" type="button" class="button button-outline">＋ 添加</button></div><div id="provider-list" class="provider-list" aria-label="本模块的服务商"></div><p id="provider-sidebar-note" class="provider-sidebar-note"></p></aside>
+          <section class="card provider-editor" aria-labelledby="provider-editor-heading">
+            <div class="provider-editor-heading"><div><div class="eyebrow">PROVIDER CONNECTION</div><h2 id="provider-editor-heading">服务商设置</h2><p id="provider-save-state" class="provider-save-state"></p></div><button id="save-provider" type="button" class="button button-primary">保存服务商</button></div>
+            <p id="provider-empty" class="project-empty">点击左侧「添加」，配置这个模块的第一个服务商。</p>
+            <div id="provider-fields" hidden>
+              <p id="provider-shared-note" class="service-shared-note" hidden></p>
+              <div class="provider-field-grid"><div><label class="field-label" for="provider-name">连接名称</label><input id="provider-name" class="text-input" maxlength="80" placeholder="给这个服务商连接起个名字" autocomplete="off"></div><div><label class="field-label" for="provider-vendor">服务商预设</label><select id="provider-vendor" class="text-input"></select></div></div>
+              <p id="provider-preset-help" class="field-help"></p>
+              <div class="provider-address-heading"><label class="field-label" for="provider-base-url">Base URL</label><button id="use-provider-address" class="provider-text-button" type="button">使用官方地址</button></div>
+              <input id="provider-base-url" class="text-input" type="url" placeholder="填写服务商提供的基础地址" autocomplete="off" spellcheck="false"><p class="field-help">地址与密钥由你填写。预设只选择协议；点击「使用官方地址」才会填入地址。</p>
+              <label class="field-label" for="provider-api-key">API Key</label><input id="provider-api-key" class="text-input" type="password" placeholder="填写密钥；留空保留已保存的密钥" autocomplete="off" spellcheck="false"><p id="provider-key-state" class="field-help"></p><label class="checkbox-label"><input id="provider-clear-key" type="checkbox">移除已保存的密钥</label>
+              <div class="provider-protocols"><div id="provider-text-api-field"><label class="field-label" for="provider-text-api">文字接口协议</label><select id="provider-text-api" class="text-input" aria-describedby="provider-protocol-help"><option value="chat_completions">OpenAI Chat Completions</option><option value="responses">OpenAI Responses</option><option value="anthropic">Anthropic Messages</option></select></div><div id="provider-speech-api-field"><label class="field-label" for="provider-speech-api">音频识别接口协议</label><select id="provider-speech-api" class="text-input" aria-describedby="provider-protocol-help"><option value="openai">OpenAI 兼容音频转写</option><option value="minimax">MiniMax 原生语音识别</option><option value="none">未配置音频识别</option></select></div></div>
+              <div id="provider-anthropic-auth-field" hidden><label class="field-label" for="provider-anthropic-auth">Anthropic 鉴权方式</label><select id="provider-anthropic-auth" class="text-input"><option value="api_key">API Key · x-api-key（Anthropic 官方）</option><option value="bearer">Bearer · Authorization（MiniMax）</option></select></div>
+              <p id="provider-protocol-help" class="field-help"></p>
+              <div class="provider-endpoints"><span id="provider-text-endpoint-label">文字请求地址</span><code id="provider-text-endpoint"></code><span id="provider-speech-endpoint-label">音频识别请求地址</span><code id="provider-speech-endpoint"></code></div>
+              <div class="provider-editor-foot"><label class="checkbox-label"><input id="provider-enabled" type="checkbox" checked>启用此连接</label><div class="provider-editor-links"><a id="provider-docs" target="_blank" rel="noopener noreferrer" hidden>查看文档 ↗</a><button id="remove-provider" type="button" class="button provider-remove">移除连接</button></div></div>
+            </div>
+          </section>
+        </section>
+        <section class="service-workflow" aria-labelledby="workflow-heading">
+          <div class="workflow-heading"><div><div class="eyebrow">MODELS & WORKFLOW</div><h2 id="workflow-heading">选择模型</h2></div><p id="workflow-order-note"></p></div>
+          <div id="workflow-grid" class="workflow-grid">
+            <section id="file-asr-step" class="card workflow-step" aria-labelledby="file-asr-heading"><div class="workflow-step-heading"><span class="workflow-number">01</span><h3 id="file-asr-heading">完整音频识别</h3><span id="file-asr-ready" class="workflow-ready">未配置</span></div><p class="workflow-description">音频 → 带时间轴的日语原文</p><label class="field-label" for="file-asr-provider">服务商连接</label><select id="file-asr-provider" class="text-input"></select><label class="field-label" for="file-asr-model">语音识别模型</label><input id="file-asr-model" class="text-input" placeholder="选择或手动填写真实语音模型" autocomplete="off" spellcheck="false"><p id="file-asr-model-hint" class="field-help"></p><button id="file-asr-fetch-models" type="button" class="button button-outline workflow-fetch">获取全部模型</button><input id="file-asr-model-search" type="search" class="text-input workflow-model-search" placeholder="搜索已获取的模型" aria-label="搜索语音识别模型" hidden><select id="file-asr-model-list" class="text-input workflow-model-list" aria-label="选择语音识别模型" hidden></select><p id="file-asr-model-status" class="field-help" role="status"></p><label class="field-label" for="file-asr-format">时间戳响应格式</label><select id="file-asr-format" class="text-input"><option value="verbose_json">verbose_json · 分句时间戳</option><option value="json">json · 通用 JSON</option><option value="srt">srt · 字幕时间戳</option></select><p class="field-help">按服务商文档选择。只返回文字时，字幕时间为估算，剪辑前需调整。</p></section>
+            <section id="correction-step" class="card workflow-step" aria-labelledby="correction-heading"><div class="workflow-step-heading"><span class="workflow-number">01</span><h3 id="correction-heading">日语文本校对</h3><span id="correction-ready" class="workflow-ready">未配置</span></div><p class="workflow-description">识别的日语原文 → 校对后的日语</p><label class="field-label" for="correction-provider">服务商连接</label><select id="correction-provider" class="text-input"></select><label class="field-label" for="correction-model">校对模型</label><input id="correction-model" class="text-input" placeholder="选择或填写 GPT 等文字模型" autocomplete="off" spellcheck="false"><p id="correction-model-hint" class="field-help"></p><button id="correction-fetch-models" type="button" class="button button-outline workflow-fetch">获取全部模型</button><input id="correction-model-search" type="search" class="text-input workflow-model-search" placeholder="搜索已获取的模型" aria-label="搜索校对模型" hidden><select id="correction-model-list" class="text-input workflow-model-list" aria-label="选择校对模型" hidden></select><p id="correction-model-status" class="field-help" role="status"></p><p class="workflow-bottom-note">先保留识别原文，再结合人名、术语与上下文保守校对。</p></section>
+            <section id="translation-step" class="card workflow-step" aria-labelledby="translation-heading"><div class="workflow-step-heading"><span class="workflow-number">02</span><h3 id="translation-heading">中文翻译</h3><span id="translation-ready" class="workflow-ready">未配置</span></div><p class="workflow-description">上一步校对后的日语 → 简体中文</p><label class="field-label" for="translation-provider">服务商连接</label><select id="translation-provider" class="text-input"></select><label class="field-label" for="translation-model">翻译模型</label><input id="translation-model" class="text-input" placeholder="选择或填写 GPT 等文字模型" autocomplete="off" spellcheck="false"><p id="translation-model-hint" class="field-help"></p><button id="translation-fetch-models" type="button" class="button button-outline workflow-fetch">获取全部模型</button><input id="translation-model-search" type="search" class="text-input workflow-model-search" placeholder="搜索翻译模型" aria-label="搜索翻译模型" hidden><select id="translation-model-list" class="text-input workflow-model-list" aria-label="选择翻译模型" hidden></select><p id="translation-model-status" class="field-help" role="status"></p><p class="workflow-bottom-note">使用校对结果翻译，最终分别导出日语、中文与双语 SRT。</p></section>
+          </div>
+        </section>
+        <div class="service-savebar"><div><strong id="service-save-state">正在读取配置</strong><p id="service-save-help">保存本模块的服务商与模型配置。</p></div><div class="service-save-actions"><button id="reload-service-config" type="button" class="button button-outline">重新读取本模块</button><button id="save-service-config" type="submit" class="button button-primary" disabled>保存配置</button></div></div>
+      </form>
+    </section>
+    <footer class="project-footer">密钥只保存在本机服务，不回显 · 音频与文字发送至各步骤选用的服务商</footer>
+  </main>
+  <script type="module" src="/static/providers.js?v=ui-navigation-1"></script>
+</body></html>

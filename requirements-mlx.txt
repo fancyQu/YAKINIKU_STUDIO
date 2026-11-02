@@ -1,0 +1,6 @@
+# Independent Apple Silicon environment for live ASR and local translation.
+# Install here without upgrading the original Tiny-compatible .venv.
+-r requirements.txt
+mlx-whisper==0.4.3
+mlx==0.32.4
+mlx-lm==0.32.2

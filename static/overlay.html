@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>烤肉台 · 独立字幕</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/static/favicon.svg?v=app-icon-1">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#070a08;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;display:flex;flex-direction:column}header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;color:#7c897d;font-size:10px;letter-spacing:.8px}header>span{display:flex;align-items:center;gap:7px}.dot{width:5px;height:5px;border-radius:50%;background:#6b7869}.dot.active{background:#e1774e}button{border:1px solid #283329;background:#131b14;border-radius:5px;color:#a3b09f;padding:6px 10px;font-size:10px;cursor:pointer}button:focus-visible{outline:2px solid #e1774e;outline-offset:3px}main{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:12px 35px 35px;overflow-wrap:anywhere}#overlay-zh{font-size:clamp(24px,4.2vw,60px);font-weight:600;line-height:1.65;letter-spacing:1px;margin:0 0 12px;text-shadow:0 2px 4px #000}#overlay-ja{font-size:clamp(14px,2.2vw,30px);font-weight:400;line-height:1.65;color:#bac3b3;margin:0}footer{text-align:center;color:#526050;font-size:9px;padding:0 20px 12px}body:fullscreen header{opacity:.45}body:fullscreen footer{display:none}@media(max-width:450px){main{padding:12px 20px 25px}header{padding:12px 15px}#overlay-zh{font-size:23px}#overlay-ja{font-size:14px}}
+  </style>
+  <link rel="stylesheet" href="/static/navigation.css?v=ui-navigation-1">
+  <script src="/static/navigation.js?v=ui-navigation-1" defer></script>
+</head>
+<body>
+  <header><span><i id="overlay-dot" class="dot"></i>烤肉台 <span id="overlay-status">等待工作台连接</span></span><div class="overlay-navigation"><a data-return-link href="/#workspace">返回工作台</a><button id="overlay-fullscreen" type="button">全屏</button></div></header>
+  <main aria-live="polite"><p id="overlay-zh">等待直播开始</p><p id="overlay-ja"></p><p id="overlay-latest" style="font-size:12px;line-height:1.8;color:#82907a;margin:15px 0 0" hidden></p></main>
+  <footer id="overlay-help">保持工作台页面打开，字幕会自动同步 · 可用于 OBS 窗口捕获</footer>
+  <script src="/static/overlay.js?v=ui-navigation-1" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f3ed"><title>Space 音频下载 · 烤肉台</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/static/favicon.svg?v=app-icon-1">
+  <script src="/static/theme.js?v=night-mode-1"></script>
+  <link rel="stylesheet" href="/static/style.css?v=audio-projects-2"><link rel="stylesheet" href="/static/space-downloads.css?v=1">  <link rel="stylesheet" href="/static/navigation.css?v=ui-navigation-1">
+  <link rel="stylesheet" href="/static/theme.css?v=night-mode-1">
+  <script src="/static/navigation.js?v=ui-navigation-1" defer></script>
+</head>
+<body class="project-page">
+  <main class="project-shell">
+    <header class="project-topbar"><a class="project-brand" href="/">烤肉台 <span>YAKINIKU STUDIO</span></a><span class="page-header-label">本机工作空间 · Space 下载</span></header>
+    <nav data-app-navigation aria-label="页面导航"></nav>
+    <section class="project-hero"><div class="eyebrow">SPACE AUDIO DOWNLOAD</div><h1>贴上链接，<em>留下声音。</em></h1><p>在已登录的浏览器读取指定回放，将可访问的音频下载并转成 MP3。</p></section>
+    <div id="space-notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <div class="space-layout">
+      <section class="card space-form-card" aria-labelledby="space-heading">
+        <div class="card-heading"><h2 id="space-heading">下载一场 Space</h2><span class="tiny-label">NEW DOWNLOAD</span></div>
+        <form id="space-form">
+          <label class="field-label" for="space-url">X Space 回放链接</label>
+          <input id="space-url" class="text-input" type="url" placeholder="https://x.com/i/spaces/…" autocomplete="off" spellcheck="false" required>
+          <p class="field-help">支持已经结束且可播放的回放。会员内容需要当前浏览器账号有收听权限。</p>
+          <button id="space-start" class="button button-primary import-submit" type="submit" disabled>打开回放并下载 MP3</button>
+        </form>
+        <div class="space-connection"><span id="extension-status" class="project-status" data-connected="false">正在检测浏览器组件</span><button id="extension-check" class="button button-outline" type="button">检测连接</button></div>
+        <p class="space-scope">只捕获为本次任务打开的标签页和对应音频资源；不操作发帖、点赞、转发等社交功能。音频在本机转码，不自动发送到识别或翻译服务。</p>
+        <details id="space-setup" class="space-setup"><summary>首次使用：加载浏览器组件</summary><ol><li><a href="/static/space-capture.zip" download>下载浏览器组件</a>并解压。</li><li>在 Edge 的扩展管理页面打开开发者模式，选择「加载解压缩的扩展」，选中解压后的文件夹。</li><li>刷新此页，确认显示「浏览器组件已连接」。在同一浏览器中登录有收听权限的 X 账号。</li></ol><p>组件读取 X 回放以及相应音频资源，并将本次捕获结果发送给本机工作台。它不读取 Cookie 或账号密码。</p></details>
+      </section>
+      <section class="card import-library" aria-labelledby="space-library-heading"><div class="card-heading"><div><h2 id="space-library-heading">下载任务</h2><p>完整下载并通过解码检查后，才会显示 MP3 下载按钮。</p></div><button id="space-refresh" class="button button-outline" type="button">刷新</button></div><div id="space-jobs"><p class="project-empty">正在读取下载任务…</p></div></section>
+    </div>
+    <footer class="project-footer">浏览器捕获部分参考开源猫抓，按 GPL-3.0 保留许可证与来源 · 仅保存当前播放列表覆盖的音频</footer>
+  </main>
+  <script type="module" src="/static/space-downloads.js?v=ui-navigation-1"></script>
+</body></html>

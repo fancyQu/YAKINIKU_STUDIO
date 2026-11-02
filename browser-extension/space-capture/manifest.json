@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "烤肉台 · 指定 Space 音频捕获",
+  "description": "只为烤肉台明确启动的 Space 下载任务捕获其 M3U8 和 AES-128 密钥。",
+  "version": "0.1.0",
+  "minimum_chrome_version": "111",
+  "permissions": ["storage"],
+  "host_permissions": ["https://x.com/*", "https://twitter.com/*", "http://127.0.0.1/*", "http://localhost/*"],
+  "background": {"service_worker": "background.js"},
+  "action": {"default_title": "烤肉台 Space 音频捕获", "default_popup": "popup.html"},
+  "content_scripts": [
+    {"matches": ["https://x.com/i/spaces/*", "https://twitter.com/i/spaces/*"], "js": ["rules.js", "page-capture.js"], "world": "MAIN", "run_at": "document_start"},
+    {"matches": ["https://x.com/i/spaces/*", "https://twitter.com/i/spaces/*"], "js": ["rules.js", "x-bridge.js"], "run_at": "document_start"},
+    {"matches": ["http://127.0.0.1/*", "http://localhost/*"], "js": ["rules.js", "local-bridge.js"], "run_at": "document_start"}
+  ]
+}

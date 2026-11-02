@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f3ed"><title>音频翻译 · 烤肉台</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/static/favicon.svg?v=app-icon-1">
+  <script src="/static/theme.js?v=night-mode-1"></script>
+  <link rel="stylesheet" href="/static/style.css?v=cloud-import-1">  <link rel="stylesheet" href="/static/navigation.css?v=ui-navigation-1">
+  <link rel="stylesheet" href="/static/theme.css?v=night-mode-1">
+  <script src="/static/navigation.js?v=ui-navigation-1" defer></script>
+</head>
+<body class="project-page">
+  <main class="project-shell">
+    <header class="project-topbar"><a class="project-brand" href="/" target="_blank" rel="noopener">烤肉台 <span>YAKINIKU STUDIO</span></a><span class="page-header-label">本机工作空间 · 完整音频翻译</span></header>
+    <nav data-app-navigation aria-label="页面导航"></nav>
+    <section class="project-hero"><div class="eyebrow">AUDIO TRANSLATION</div><h1>完整音频，<em>逐句读懂。</em></h1><p>导入音频 → 云端识别日语 → GPT 校正与中文翻译 → 预览与导出字幕</p></section>
+    <p class="project-links"><a href="/static/providers.html?section=asr" class="button button-outline" target="_blank" rel="noopener">ASR 音频识别配置</a><a href="/static/providers.html?section=text" class="button button-outline" target="_blank" rel="noopener">校对与翻译配置</a><a href="/static/space-downloads.html" class="button button-outline">Space 音频下载</a></p>
+    <div id="import-notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="card import-cloud-settings" aria-labelledby="import-api-heading">
+      <div class="card-heading"><div><h2 id="import-api-heading">完整音频语音识别 API</h2><p>为完整音频单独配置云端识别服务；直播继续使用本机识别。</p></div><span id="import-api-badge" class="project-status">正在读取配置</span></div>
+      <form id="import-settings-form">
+        <div class="import-settings-grid">
+          <div><label class="field-label" for="import-api-base-url">语音识别 Base URL</label><input id="import-api-base-url" class="text-input" type="url" placeholder="留空使用工作台共用 API 地址" autocomplete="off" spellcheck="false"><p id="import-effective-base" class="field-help">正在读取已保存的语音服务地址…</p></div>
+          <div><label class="field-label" for="import-api-key">语音识别 API Key</label><input id="import-api-key" class="text-input" type="password" placeholder="填写独立密钥；留空保留已保存的密钥" autocomplete="off" spellcheck="false"><p id="import-key-state" class="field-help">密钥只保存在本机，不会显示在页面中。</p><label class="checkbox-label"><input id="clear-import-api-key" type="checkbox">移除已保存的独立密钥，使用共用密钥</label></div>
+          <div><label class="field-label" for="import-asr-model">语音识别模型</label><input id="import-asr-model" class="text-input" placeholder="选择或填写该服务支持的语音识别模型" autocomplete="off" spellcheck="false" required></div>
+          <div><label class="field-label" for="import-response-format">语音识别响应格式</label><select id="import-response-format" class="text-input"><option value="verbose_json">verbose_json · 分句与时间戳</option><option value="json">json · 通用 JSON</option><option value="srt">srt · 带时间戳字幕</option></select><p id="import-format-help" class="field-help"></p></div>
+        </div>
+        <div class="import-model-picker"><div class="import-model-picker-heading"><label class="field-label" for="import-model-list">从语音服务获取全部可用模型</label><button id="fetch-import-models" class="button button-outline" type="button">获取模型</button></div><input id="import-model-search" class="text-input" type="search" placeholder="搜索模型名称" aria-label="搜索完整音频语音识别模型" autocomplete="off" spellcheck="false" hidden><select id="import-model-list" class="text-input" aria-describedby="import-model-status" disabled><option value="">先获取模型列表，或在上方手动填写</option></select><p id="import-model-status" class="field-help" role="status" aria-live="polite">列表包含服务返回的全部模型。请按平台文档选择支持语音识别的模型；也可以直接手动填写。</p></div>
+        <div class="import-api-compatibility">云端语音服务需要支持 <code>/audio/transcriptions</code>。普通 GPT 文字接口或模型列表中有 GPT 模型，不代表该服务支持音频识别。</div>
+        <div class="import-settings-actions"><p id="import-settings-status" role="status" aria-live="polite">请先配置语音识别 API；中文校正与翻译沿用工作台已保存的翻译服务。</p><div class="import-settings-buttons"><button id="reload-import-settings" class="button button-outline" type="button">重新读取设置</button><button id="save-import-settings" class="button button-primary" type="submit">保存识别 API 设置</button></div></div>
+      </form>
+    </section>
+    <section id="subtitle-settings" class="card import-cloud-settings" aria-labelledby="subtitle-settings-heading">
+      <div class="card-heading"><div><h2 id="subtitle-settings-heading">字幕分句</h2><p>先按标点分句，较长的句子再按字数与显示时间拆分。日语、中文、双语字幕使用相同时间轴。</p></div><span id="subtitle-settings-badge" class="project-status">正在读取</span></div>
+      <form id="subtitle-settings-form">
+        <label class="checkbox-label"><input id="subtitle-split-enabled" type="checkbox" checked>自动拆分过长字幕</label>
+        <div class="import-settings-grid">
+          <div><label class="field-label" for="subtitle-max-chars">每句目标字数</label><input id="subtitle-max-chars" class="text-input" type="number" min="8" max="80" step="1" value="24" required><p class="field-help">按日语字数控制，建议 18–28 字。中文译文长度可能不同。</p></div>
+          <div><label class="field-label" for="subtitle-max-seconds">每句最长显示时间（秒）</label><input id="subtitle-max-seconds" class="text-input" type="number" min="2" max="15" step="0.5" value="6" required><p class="field-help">建议 4–6 秒；数值越小，每条字幕越短。</p></div>
+        </div>
+        <p class="field-help">仅用于新导入和新精准校验项目；已有项目与原音频保持原样。识别服务未提供逐字时间时，拆分时间为估算，剪辑前请试听核对。</p>
+        <div class="import-settings-actions"><p id="subtitle-settings-status" role="status" aria-live="polite">正在读取字幕分句设置…</p><div class="import-settings-buttons"><button id="reload-subtitle-settings" class="button button-outline" type="button">重新读取</button><button id="save-subtitle-settings" class="button button-primary" type="submit" disabled>保存分句设置</button></div></div>
+      </form>
+    </section>
+    <div class="import-layout">
+      <section class="card import-form-card" aria-labelledby="import-heading">
+        <div class="card-heading"><h2 id="import-heading">导入一份音频</h2><span class="tiny-label">NEW PROJECT</span></div>
+        <form id="import-form">
+          <div id="audio-dropzone" class="audio-dropzone"><span class="upload-glyph" aria-hidden="true">↑</span><strong>把完整音频拖到这里</strong><span>或选择本机音频文件</span><button id="choose-audio" class="button button-outline" type="button">选择音频</button><input id="audio-file" type="file" accept="audio/*,.mp4,.webm,.wma,.aif,.aiff" hidden></div>
+          <div id="selected-audio" class="selected-audio" hidden></div>
+          <label class="field-label" for="import-title">项目名称 <span>选填</span></label><input id="import-title" class="text-input" placeholder="默认使用文件名称" maxlength="100" autocomplete="off">
+          <p class="field-help import-privacy">支持 WAV、MP3、M4A、FLAC、OGG 等格式，单个文件最大 8 GB。音频将在本机保存，并发送到上方配置的云端语音服务；日语文本发送到工作台已保存的 GPT API 校正和翻译。</p>
+          <button id="start-import" class="button button-primary import-submit" type="submit" aria-describedby="start-import-help" disabled>开始转写与翻译</button>
+          <p id="start-import-help" class="field-help import-start-help">正在读取语音识别配置…</p>
+          <div id="upload-progress-wrap" class="upload-progress" hidden><progress id="upload-progress" max="100" value="0"></progress><span id="upload-label">正在上传到本机…</span></div>
+        </form>
+        <p class="import-tip">语音识别使用上方独立配置的云端服务，校正与中文翻译沿用工作台中的翻译模型。开始后可关闭此页，后台处理会继续；请保持本机服务运行，并在结束直播录制后导入。</p>
+      </section>
+      <section class="card import-library" aria-labelledby="import-projects-heading"><div class="card-heading"><div><h2 id="import-projects-heading">音频翻译项目</h2><p>处理完成后，点开项目即可试听并切换字幕。</p></div><button id="refresh-imports" class="button button-outline" type="button">刷新</button></div><div id="import-projects" class="import-projects"><p class="project-empty">正在读取本机项目…</p></div></section>
+    </div>
+    <footer class="project-footer">分别保存日语 SRT、中文 SRT、双语 SRT · 字幕与音频使用同一条时间轴</footer>
+  </main>
+  <script type="module" src="/static/imports.js?v=ui-navigation-1"></script>
+</body></html>

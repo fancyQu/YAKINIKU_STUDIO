@@ -1,0 +1,55 @@
+name: Source checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Python regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pip check
+      - run: python -m unittest discover -s tests -v
+
+  frontend:
+    name: Frontend regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - run: node --test tests/*.test.cjs
+
+  macos:
+    name: macOS installation and media checks
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements*.txt
+            constraints-macos-py312.txt
+      - run: python -m pip install -r requirements-mlx.txt -c constraints-macos-py312.txt
+      - run: python -m pip check
+      - run: python -m unittest discover -s tests -v
+      - run: brew install ffmpeg
+      - run: python -m unittest discover -s tools/hls-audio-download/tests -v
+      - run: zsh -f -o NO_BG_NICE -n 安装macOS环境.command && zsh -f -o NO_BG_NICE -n 启动烤肉台.command
+
+  # GPU performance, live capture and paid API calls require separate validation.

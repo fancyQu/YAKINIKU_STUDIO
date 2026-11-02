@@ -1,0 +1,4 @@
+interface:
+  display_name: "Space / M3U8 音频下载"
+  short_description: "通过本机组件捕获 Space 回放，或解析猫抓与 M3U8，下载并转成 MP3"
+  default_prompt: "使用 $hls-audio-download 解析我提供的 Space 链接、M3U8 链接或猫抓文本，下载回放音频并用 FFmpeg 转成 MP3。"
