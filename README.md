@@ -1,4 +1,6 @@
-# YAKINIKU STUDIO · 烤肉台
+# YAKINIKU STUDIO for Mac · 烤肉台
+
+![macOS · Apple Silicon](https://img.shields.io/badge/macOS-Apple%20Silicon-000000?logo=apple&logoColor=white)
 
 面向 Apple Silicon Mac 和 Microsoft Edge 的本机日语音频字幕工作台。打开自己正在收听的 X（推特）直播，采集该标签页的声音，实时显示日语原文和简体中文字幕。结束后，音频与字幕分别保存在本机，可以导入剪映、Premiere、DaVinci Resolve 或 OBS 工作流。
 
